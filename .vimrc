@@ -1,28 +1,7 @@
 scriptencoding utf-8
 
-"-----------------------------------------------------------------------
-" Vim settings file for Ciaran McCreesh <ciaranm at gentoo.org>
-"
-" I finally added some comments, so you can have some vague idea of
-" what all this does.
-"
-" Most recent update: Tue Nov  1 15:44:16 2016
-"
-" Get the latest version from:
-"     http://dev.gentoo.org/~ciaranm/configs/vimrc
-"
-" Don't just blindly copy this vimrc. There's some rather idiosyncratic
-" stuff in here...
-"
-"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 " TERMINAL SETUP
 "-----------------------------------------------------------------------
-
-" Extra terminal things
-" if ($TERM == "rxvt-unicode") && (&termencoding == "")
-"     set termencoding=utf-8
-" endif
 
 " Set terminal encoding to utf-8
 set tenc=utf-8
@@ -64,8 +43,7 @@ set showcmd
 " Highlight matching parens
 set showmatch
 
-" Search options: incremental search, do clever case things, highlight
-" search
+" Search options: incremental search, do clever case things, highlight search
 set incsearch
 set ignorecase
 set infercase
@@ -82,8 +60,7 @@ set noerrorbells
 set visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
-" Try to show at least three lines and two columns of context when
-" scrolling
+" Try to show at least three lines and two columns of context when scrolling
 set scrolloff=3
 set sidescrolloff=2
 
@@ -103,57 +80,8 @@ set winminheight=1
 " Enable syntax highlighting
 syntax on
 
-" Set fonts
-if has("gui_gtk")
-    set guifont=Terminus\ 12
-elseif has("gui_running")
-    set gfn=-xos4-terminus-medium-r-normal-*-*-160-*-*-c-*-iso8859-1
-endif
-
-" Changing colorschemes to match time of day
-
-let s:hour=strftime("%H")
-let s:sunrise=6
-let s:sunset =18
-
-"if has('gui')
-"    colorscheme inkpot
-"        else
-"    colorscheme desert
-"endif
-
+" Set color scheme 
 colorscheme desert
-
-" Try to load a nice colourscheme
-" fun! LoadColourScheme(schemes)
-"     let l:schemes = a:schemes . ":"
-"     while l:schemes != ""
-"         let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
-"         let l:schemes = strpart(l:schemes, stridx(l:schemes, ":") + 1)
-"         try
-"             exec "colorscheme" l:scheme
-"             break
-"         catch
-"         endtry
-"     endwhile
-" endfun
-
-" if has('gui')
-"     call LoadColourScheme("inkpot:desert")
-" else    
-"     if &t_Co == 88 || &t_Co == 256
-"         call LoadColourScheme("desert")
-"     else
-"         call LoadColourScheme("desert")
-"     endif
-" endif
-
-"    if &t_Co == 88 || &t_Co == 256
-"        call LoadColourScheme("inkpot:desert:elflord")
-"    else
-"        call LoadColourScheme("desert:elflord")
-"    endif
-" endif
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
@@ -171,7 +99,6 @@ if has('gui')
 " Set gui headroom to 0
     set ghr=0
 end
-
 
 " By default, go for an indent of 4
 set shiftwidth=4
@@ -193,12 +120,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-" Enable modelines only on secure vim versions
-if (v:version == 603 && has("patch045")) || (v:version > 603)
-    set modeline
-else
-    set nomodeline
-endif
 
 " Nice statusbar
 set laststatus=2
@@ -227,26 +148,6 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 " Include $HOME in cdpath
 let &cdpath=','.expand("$HOME")
 
-" Better include path
-set path+=src/
-set path+=/usr/lib/gcc-lib/**/include/g++-v3/**
-" Show tabs and trailing whitespace visually
-" if (&termencoding == "utf-8") || has("gui_running")
-"     if v:version >= 700
-"         set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
-"     else
-"         set list listchars=tab:»·,trail:·,extends:…
-"     endif
-" else
-"     if v:version >= 700
-"         set list listchars=tab:>-,trail:.,extends:>,nbsp:_
-"     else
-"         set list listchars=tab:>-,trail:.,extends:>
-"     endif
-" endif
-" 
-" set fillchars=fold:-
-
 
 " WORD COMPLETION | SPELL CHECKING
 "-----------------------------------------------------------------------
@@ -257,7 +158,6 @@ set dictionary=/usr/share/dict/words
  
 " Type :asp to begin spell checking
 " cab asp :w<CR>:!aspell -e -c  %<CR>:e<CR><CR>
-"
 " To type the control character  use <Ctrl-v><Ctrl-t> in insert mode
 map  :w!<CR>:!aspell --lang "en_GB" check %<CR>:e! %<CR>
 
@@ -274,79 +174,6 @@ fun! <SID>WindowWidth()
         setlocal foldcolumn=0
     endif
 endfun
-
-" Force active window to the top of the screen without losing its
-" size.
-fun! <SID>WindowToTop()
-    let l:h=winheight(0)
-    wincmd K
-    execute "resize" l:h
-endfun
-
-" Force active window to the bottom of the screen without losing its
-" size.
-fun! <SID>WindowToBottom()
-    let l:h=winheight(0)
-    wincmd J
-    execute "resize" l:h
-endfun
-
-" Update .*rc header
-fun! <SID>UpdateRcHeader()
-    let l:c=col(".")
-    let l:l=line(".")
-    1,10s-\(Most recent update:\).*-\="Most recent update: ".strftime("%c")-e
-    call cursor(l:l, l:c)
-endfun
-
-
-" autocmds
-augroup ciaranm
-    autocmd!
-
-    " Turn off search highlight when idle
-    autocmd CursorHold * nohls | redraw
-
-    " Automagic line numbers
-    autocmd BufEnter * :call <SID>WindowWidth()
-
-    " Update header in .vimrc and .bashrc before saving
-    autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
-    autocmd BufWritePre *bashrc :call <SID>UpdateRcHeader()
-
-    " Always do a full syntax refresh
-    autocmd BufEnter * syntax sync fromstart
-
-    " For help files, move them to the top window and make <Return>
-    " behave like <C-]> (jump to tag)
-    autocmd FileType help :call <SID>WindowToTop()
-    autocmd FileType help nmap <buffer> <Return> <C-]>
-
-    " For the quickfix window, move it to the bottom
-    autocmd FileType qf :3 wincmd _ | :call <SID>WindowToBottom()
-
-    " For svn-commit, don't create backups
-    autocmd BufRead svn-commit.tmp :setlocal nobackup
-
-    " Detect procmailrc
-    autocmd BufRead procmailrc :setfiletype procmail
-
-    " bash-completion ftdetects
-    autocmd BufNewFile,BufRead /*/*bash*completion*/*
-                \ if expand("<amatch>") !~# "ChangeLog" |
-                \     let b:is_bash = 1 | set filetype=sh |
-                \ endif
-
-    try
-        " if we have a vim which supports QuickFixCmdPost (patch by
-        " ciaranm, marked for inclusion in vim7), give us an error
-        " window after running make, grep etc, but only if results are
-        " available.
-        autocmd QuickFixCmdPost * :cwindow 3
-    catch
-    endtry
-augroup END
-
 
 " MAPPINGS
 "-----------------------------------------------------------------------
@@ -365,10 +192,6 @@ noremap  <S-Down> gj
 
 " Automatically format pasted text
 :map <c-p> =`]
-
-" Make <space> in normal mode go down a page rather than left a
-" character
-" noremap <space> <C-f>
 
 " Useful things from inside imode
 inoremap <C-z>w <C-o>:w<CR>
@@ -390,11 +213,6 @@ noremap <Leader>i i<Space><Esc>r
 " Split the line
 nmap <Leader>n \i<CR>
 
-" Pull the following line to the cursor position
-noremap <Leader>J :s/\%#\(.*\)\n\(.*\)/\2\1<CR>
-
-" In normal mode, jj escapes
-inoremap jj <Esc>
 
 " Select everything
 noremap <Leader>gg ggVG
@@ -424,60 +242,6 @@ nmap q: :q
 " set up some more useful digraphs
 digraph ., 8230    " ellipsis (…)
 
-" GNU format changelog entry
-fun! MakeChangeLogEntry()
-    norm gg
-    /^\d
-    norm 2O
-    norm k
-    call setline(line("."), strftime("%Y-%m-%d") .
-                \ " Ciaran McCreesh <ciaranm@gentoo.org>")
-    norm 2o
-    call setline(line("."), "\t* ")
-    norm $
-endfun
-noremap ,cl :call MakeChangeLogEntry()<CR>
-
-" command aliases, can't call these until after cmdalias.vim is loaded
-au VimEnter * if exists("loaded_cmdalias") |
-            \       call CmdAlias("mkdir",   "!mkdir") |
-            \       call CmdAlias("cvs",     "!cvs") |
-            \       call CmdAlias("svn",     "!svn") |
-            \       call CmdAlias("commit",  "!svn commit -m \"") |
-            \       call CmdAlias("upload",  "make upload") |
-            \ endif
-
-
-" SPECIAL LESS.SH AND MAN MODES
-"-----------------------------------------------------------------------
-
-fun! <SID>is_pager_mode()
-    let l:ppidc = ""
-    try
-        if filereadable("/lib/libc.so.6")
-            let l:ppid = libcallnr("/lib/libc.so.6", "getppid", "")
-        elseif filereadable("/lib/libc.so.0")
-            let l:ppid = libcallnr("/lib/libc.so.0", "getppid", "")
-        else
-            let l:ppid = ""
-        endif
-        let l:ppidc = system("ps -p " . l:ppid . " -o comm=")
-        let l:ppidc = substitute(l:ppidc, "\\n", "", "g")
-    catch
-    endtry
-    return l:ppidc ==# "less.sh" ||
-                \ l:ppidc ==# "vimpager" ||
-                \ l:ppidc ==# "manpager.sh" ||
-                \ l:ppidc ==# "vimmanpager"
-endfun
-if <SID>is_pager_mode()
-    " we're in vimpager / less.sh / man mode
-    set laststatus=0
-    set ruler
-    set foldmethod=manual
-    set foldlevel=99
-    set nolist
-endif
 
 " PLUGIN / SCRIPT / APP SETTINGS
 "-----------------------------------------------------------------------
@@ -570,16 +334,7 @@ set linebreak
 "-----------------------------------------------------------------------
 set autoread
 
-
-" START PATHOGEN
-" execute pathogen#infect()
-
-
-"-----------------------------------------------------------------------
-"
-"
-" vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
-"
+" Start Powerline
 set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
 set t_Co=256
 let g:minBufExplForceSyntaxEnable = 1
