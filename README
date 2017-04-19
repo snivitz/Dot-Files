@@ -1,1 +1,9 @@
-Testing
+# A Repository of Dot Files
+
+This is an attempt to provide an online, up to date and readily accessible repositiory of the files necessary to set up any *nix system.
+
+For starters, I am hoping to track the following files —
+- .zshrc
+- .bashrc
+- .screenrc
+- .elinks/elinks.conf
