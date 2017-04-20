@@ -9,27 +9,4 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E38;5;%dm'
 defbce "on"
 
 screen -t zsh			0 zsh
-screen -t rainbowstream		2 rainbowstream
 screen -t elinks 		9 /usr/local/bin/elinks
-
-# Blue status bar at the bottom of Screen with window names & numbers
-# hardstatus 		on
-# hardstatus		alwayslastline
-
-# Phil Gregory 
-# http://aperiodic.net/phil/configs/
-# ---------------------------------------------------------------------------
-# hardstatus 		string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m/%d %C%a "
-# caption always "%?%F%{-b bc}%:%{-b bb}%?%C|%D|%M %d|%H%?%F%{+u wb}%? %L=%-Lw%45>%{+b by}%n%f* %t%{-}%+Lw%-0<"
-# caption always "%?%F%{-b bc}%:%{-b bb}%?%C|%D|%M %d %?%F%{+u wb}%? %L=%-Lw%45>%{+b by}%n%f* %t%{-}%+Lw%-0<"
-
-# Giles Orr 
-# http://www.gilesorr.com/code/configs/screenrc
-# ---------------------------------------------------------------------------
-# hardstatus alwayslastline "%{= kC}  %D %d %C %a %{= kW } %w "
-
-# Using tab to move around regions gets annoying. These help.
-# bind j focus down
-# bind k focus up
-# bind t focus top
-# bind b focus bottom
