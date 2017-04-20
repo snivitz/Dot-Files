@@ -1,3 +1,5 @@
+" Edited April 20, 2017
+
 scriptencoding utf-8
 
 " TERMINAL SETUP
@@ -13,15 +15,12 @@ set encoding=utf-8
 if ($TERM == "xterm")
     set term=xterm-256color
 else
-" xfce4/Terminal has issues with the previous setting
-" xfce4/Terminal $TERM is now set to "xterm-color"
-" This helps vim use default xterm settings
     if($TERM =="xterm-color")
         set term=xterm
     endif
 endif
 
-" BASE SETTING
+" BASE SETTINGS
 "-----------------------------------------------------------------------
 
 " Don't be compatible with vi
@@ -120,7 +119,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-
 " Nice statusbar
 set laststatus=2
 set statusline=
@@ -130,20 +128,10 @@ set statusline+=%h%m%r%w                     " flags
 set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
 set statusline+=%{&encoding},                " encoding
 set statusline+=%{&fileformat}]              " file format
-if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
-    set statusline+=\ %{VimBuddy()}          " vim buddy
-endif
 set statusline+=%=                           " right align
 set statusline+=0x%-8B\                      " current char
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
-" If possible, try to use a narrow number column.
-" if v:version >= 700
-"     try
-"         setlocal numberwidth=3
-"     catch
-"     endtry
-" endif
 
 " Include $HOME in cdpath
 let &cdpath=','.expand("$HOME")
@@ -243,83 +231,6 @@ nmap q: :q
 digraph ., 8230    " ellipsis (…)
 
 
-" PLUGIN / SCRIPT / APP SETTINGS
-"-----------------------------------------------------------------------
-
-" Perl specific options
-let perl_include_pod=1
-let perl_fold=1
-let perl_fold_blocks=1
-
-" Vim specific options
-let g:vimsyntax_noerror=1
-
-" c specific options
-let g:c_gnu=1
-" Settings for taglist.vim
-let Tlist_Use_Right_Window=1
-let Tlist_Auto_Open=0
-let Tlist_Enable_Fold_Column=0
-let Tlist_Compact_Format=1
-let Tlist_WinWidth=28
-let Tlist_Exit_OnlyWindow=1
-let Tlist_File_Fold_Auto_Close = 1
-nnoremap <silent> <F9> :Tlist<CR>
-
-" Settings minibufexpl.vim
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplWinFixHeight = 1
-" let g:miniBufExplForceSyntaxEnable = 1
-
-" Settings for showmarks.vim
-if has("gui_running")
-    let g:showmarks_enable=1
-else
-    let g:showmarks_enable=0
-    let loaded_showmarks=1
-endif
-
-autocmd VimEnter *
-            \ if has('gui') |
-            \        highlight ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e |
-            \        highlight SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e |
-            \    endif
-
-" Settings for explorer.vim
-let g:explHideFiles='^\.'
-
-" Settings for netrw
-let g:netrw_list_hide='^\.,\~$'
-
-" Settings for :TOhtml
-let html_number_lines=1
-let html_use_css=1
-let use_xhtml=1
-
-" cscope settings
-if has('cscope') && filereadable("/usr/bin/cscope")
-    set csto=0
-    set cscopetag
-    set nocsverb
-    if filereadable("cscope.out")
-        cs add cscope.out
-    endif
-    set csverb
-
-    let x = "sgctefd"
-    while x != ""
-        let y = strpart(x, 0, 1) | let x = strpart(x, 1)
-        exec "nmap <C-j>" . y . " :cscope find " . y .
-                    \ " <C-R>=expand(\"\<cword\>\")<CR><CR>"
-        exec "nmap <C-j><C-j>" . y . " :scscope find " . y .
-                    \ " <C-R>=expand(\"\<cword\>\")<CR><CR>"
-    endwhile
-    nmap <C-j>i      :cscope find i ^<C-R>=expand("<cword>")<CR><CR>
-    nmap <C-j><C-j>i :scscope find i ^<C-R>=expand("<cword>")<CR><CR>
-endif
 
 " FINAL COMMANDS
 "-----------------------------------------------------------------------
