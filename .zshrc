@@ -30,7 +30,7 @@ LESSCHARSET=utf-8
 # Powerline
 source /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
-##==== Mac Only === ##
+## ==== Mac Only === ##
 
 # Brew CoreUtils
 # export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
